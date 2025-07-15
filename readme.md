@@ -276,6 +276,10 @@ cleanTemplate = htmlClean( emailTemplate, "basic" );
 // Process cleanTemplate safely
 ```
 
+## GitHub Repository and Reporting Issues
+
+Visit the GitHub repository: https://github.com/ortus-boxlang/bx-jsoup for release notes. You can also file a bug report or improvement suggestion via Jira: https://ortussolutions.atlassian.net/secure/CreateIssueDetails!init.jspa?pid=13359&issuetype=1
+
 ## Ortus Sponsors
 
 BoxLang is a professional open-source project and it is completely funded by the [community](https://patreon.com/ortussolutions) and [Ortus Solutions, Corp](https://www.ortussolutions.com). Ortus Patreons get many benefits like a cfcasts account, a FORGEBOX Pro account and so much more. If you are interested in becoming a sponsor, please visit our patronage page: [https://patreon.com/ortussolutions](https://patreon.com/ortussolutions)
