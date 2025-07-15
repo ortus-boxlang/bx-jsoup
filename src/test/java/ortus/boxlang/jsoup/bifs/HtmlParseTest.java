@@ -29,7 +29,7 @@ import ortus.boxlang.runtime.types.IStruct;
 
 public class HtmlParseTest extends BaseIntegrationTest {
 
-	@DisplayName("It can parse HTML content correctly")
+	@DisplayName( "It can parse HTML content correctly" )
 	@Test
 	public void testHtmlParse() {
 
@@ -46,27 +46,27 @@ public class HtmlParseTest extends BaseIntegrationTest {
 		    context );
 		// @formatter:on
 
-		IStruct doc = (IStruct) variables.get(result);
-		assertEquals("My Page", doc.get("title"));
-		assertEquals("<h1>Hello World</h1>", doc.get("html"));
+		IStruct doc = ( IStruct ) variables.get( result );
+		assertEquals( "My Page", doc.get( "title" ) );
+		assertEquals( "<h1>Hello World</h1>", doc.get( "html" ) );
 	}
 
-	@DisplayName("BoxDocument can call the toXML() method")
+	@DisplayName( "BoxDocument can call the toXML() method" )
 	@Test
 	public void testBoxDocumentToXML() {
-		BoxDocument doc = BoxDocument.fromDocument(BoxDocument.EMPTY_DOCUMENT);
-		String xml = doc.toXML();
-		assertThat(xml).contains("<html>");
-		assertThat(xml).contains("<head>");
+		BoxDocument	doc	= BoxDocument.fromDocument( BoxDocument.EMPTY_DOCUMENT );
+		String		xml	= doc.toXML();
+		assertThat( xml ).contains( "<html>" );
+		assertThat( xml ).contains( "<head>" );
 	}
 
-	@DisplayName("BoxDocument can call the toJson() method")
+	@DisplayName( "BoxDocument can call the toJson() method" )
 	@Test
 	public void testBoxDocumentToJson() {
-		BoxDocument doc = BoxDocument.fromDocument(BoxDocument.EMPTY_DOCUMENT);
-		String json = doc.toJSON();
-		assertThat(json).contains("\"html\"");
-		assertThat(json).contains("\"head\"");
+		BoxDocument	doc		= BoxDocument.fromDocument( BoxDocument.EMPTY_DOCUMENT );
+		String		json	= doc.toJSON();
+		assertThat( json ).contains( "\"html\"" );
+		assertThat( json ).contains( "\"head\"" );
 	}
 
 }
