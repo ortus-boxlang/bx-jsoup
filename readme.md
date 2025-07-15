@@ -2,11 +2,9 @@
 
 ```
 |:------------------------------------------------------:|
-| ⚡︎ B **Parameters:**
-
-- `html` (string, required): The HTML string to parsex L a n g ⚡︎
-| Dynamic : Modular : Productive |
-| :----------------------------: |
+| ⚡︎ B o x L a n g ⚡︎
+| Dynamic : Modular : Productive
+|:------------------------------------------------------:|
 ```
 
 <blockquote>
@@ -44,13 +42,13 @@ box install bx-jsoup
 
 ### htmlParse( html )
 
-Parses an HTML string and returns a Jsoup Document object for manipulation.
+Parses an HTML string and returns a BoxDocument object for manipulation. BoxDocument extends Jsoup's Document class with additional BoxLang-specific methods.
 
 **Parameters:**
 
 - `html` (string, required): The HTML string to parse
 
-**Returns:** A Jsoup Document object with methods for HTML manipulation
+**Returns:** A BoxDocument object with methods for HTML manipulation
 
 **Example:**
 
@@ -70,9 +68,21 @@ items = doc.select( ".item" ); // Returns elements with class 'item'
 
 // Extract text content
 textContent = doc.text(); // Returns plain text without HTML tags
+
+// Enhanced BoxDocument methods
+htmlContent = "<div class='container'><h1>Title</h1><p>Content</p></div>";
+doc = htmlParse( htmlContent );
+
+// Convert to JSON
+jsonString = doc.toJSON(); // Compact JSON
+prettyJson = doc.toJSON( true ); // Pretty-printed JSON
+
+// Convert to XML
+xmlString = doc.toXML(); // Compact XML
+prettyXml = doc.toXML( true, 2 ); // Pretty-printed XML with 2-space indentation
 ```
 
-**Common Document Methods:**
+**Standard Jsoup Document Methods:**
 
 - `title()` – Get the contents of the `<title>` tag
 - `select(selector)` – Find elements using CSS selectors
@@ -87,11 +97,59 @@ textContent = doc.text(); // Returns plain text without HTML tags
 - `html()` – Get the inner HTML of the document body
 - `createElement(tagName)` – Create a new element with the given tag
 
+**Enhanced BoxDocument Methods:**
+
+- `toJSON()` – Convert the document to a compact JSON representation
+- `toJSON(prettyPrint)` – Convert to JSON with optional pretty-printing
+- `toXML()` – Convert the document to a compact XML representation
+- `toXML(prettyPrint, indentFactor)` – Convert to XML with optional pretty-printing and custom indentation
+
+**Enhanced Methods Examples:**
+
+```javascript
+// Sample HTML for examples
+htmlContent = `
+<div class="product" id="item-1">
+    <h2>Product Name</h2>
+    <p class="description">Product description here</p>
+    <span class="price">$19.99</span>
+</div>
+`;
+doc = htmlParse( htmlContent );
+
+// Convert to JSON (compact)
+jsonCompact = doc.toJSON();
+// Result: {"tag":"html","children":[{"tag":"head"},{"tag":"body","children":[{"tag":"div","attributes":{"class":"product","id":"item-1"},"children":[{"tag":"h2","children":[{"text":"Product Name"}]},{"tag":"p","attributes":{"class":"description"},"children":[{"text":"Product description here"}]},{"tag":"span","attributes":{"class":"price"},"children":[{"text":"$19.99"}]}]}]}]}
+
+// Convert to JSON (pretty-printed)
+jsonPretty = doc.toJSON( true );
+// Result: Formatted JSON with proper indentation
+
+// Convert to XML (compact)
+xmlCompact = doc.toXML();
+// Result: <html><head></head><body><div class="product" id="item-1"><h2>Product Name</h2>...</div></body></html>
+
+// Convert to XML (pretty-printed with 4-space indentation)
+xmlPretty = doc.toXML( true, 4 );
+// Result:
+// <html>
+//     <head></head>
+//     <body>
+//         <div class="product" id="item-1">
+//             <h2>Product Name</h2>
+//             <p class="description">Product description here</p>
+//             <span class="price">$19.99</span>
+//         </div>
+//     </body>
+// </html>
+```
+
 ### htmlClean( html, safeList, preserveRelativeLinks, baseUri )
 
 Cleans and sanitizes HTML content to prevent XSS attacks and ensure safe rendering.
 
 **Parameters:**
+
 - `html` (string, required): The HTML string to clean
 - `safeList` (string, optional): The safety level to apply (default: "relaxed")
 - `preserveRelativeLinks` (boolean, optional): Whether to preserve relative links (default: false)
@@ -100,6 +158,7 @@ Cleans and sanitizes HTML content to prevent XSS attacks and ensure safe renderi
 **Returns:** A cleaned HTML string
 
 **Safelist Options:**
+
 - `none`: Maximum cleaning, removes all tags and returns plain text only
 - `simpletext`: Allows very limited inline formatting tags like `<b>`, `<i>`, `<br>`
 - `basic`: Basic cleaning, removes all tags except for a few safe ones
@@ -154,6 +213,7 @@ cleanHtml = htmlClean(
 ## Use Cases
 
 ### Content Management Systems
+
 Clean user-generated content before storing or displaying:
 
 ```javascript
@@ -163,6 +223,7 @@ safeContent = htmlClean( userContent );
 ```
 
 ### Web Scraping
+
 Parse and extract data from HTML content:
 
 ```javascript
@@ -172,7 +233,41 @@ productName = doc.select( ".product h2" ).text();
 price = doc.select( ".price" ).text();
 ```
 
+### Data Transformation
+
+Convert HTML to different formats using BoxDocument's enhanced methods:
+
+```javascript
+// Parse HTML content
+htmlContent = `
+<article>
+    <header>
+        <h1>Article Title</h1>
+        <meta name="author" content="John Doe">
+    </header>
+    <section class="content">
+        <p>First paragraph of the article.</p>
+        <p>Second paragraph with <em>emphasis</em>.</p>
+    </section>
+</article>
+`;
+doc = htmlParse( htmlContent );
+
+// Convert to structured JSON for API responses
+jsonData = doc.toJSON( true );
+// Use jsonData in REST APIs or data processing
+
+// Convert to XML for legacy systems
+xmlData = doc.toXML( true, 2 );
+// Use xmlData for XML-based integrations
+
+// Extract plain text for search indexing
+textContent = doc.text();
+// Use textContent for full-text search
+```
+
 ### Email Template Processing
+
 Clean HTML emails before sending:
 
 ```javascript
@@ -180,30 +275,6 @@ emailTemplate = "<p>Hello {{name}}, <script>malicious()</script></p>";
 cleanTemplate = htmlClean( emailTemplate, "basic" );
 // Process cleanTemplate safely
 ```
-
-## Security Considerations
-
-This module is designed with security in mind:
-
-- **XSS Prevention**: All cleaning operations remove potentially dangerous scripts and attributes
-- **Configurable Safety**: Choose the appropriate safelist level for your use case
-- **Link Handling**: Control how relative links are processed to prevent malicious redirects
-- **Input Validation**: Built-in validation ensures non-empty HTML input
-
-## Dependencies
-
-This module leverages the powerful [Jsoup](https://jsoup.org/) Java library for HTML parsing and cleaning. Jsoup provides:
-
-- Robust HTML parsing with error recovery
-- CSS selector support
-- Comprehensive whitelist-based cleaning
-- Standards-compliant HTML output
-
-## Module Information
-
-- **Version**: 1.0.0-snapshot
-- **Author**: Luis Majano
-- **BoxLang Mapping**: `bxJsoup`
 
 ## Ortus Sponsors
 
