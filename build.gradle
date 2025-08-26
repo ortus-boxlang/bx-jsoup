@@ -45,7 +45,7 @@ dependencies {
 		testImplementation "io.boxlang:boxlang:1.3.0"
 	}
 
-	implementation 'org.jsoup:jsoup:1.21.1'
+	implementation 'org.jsoup:jsoup:1.21.2'
 
 	// Test Frameworks
 	testImplementation "org.junit.jupiter:junit-jupiter:5.+"
